@@ -48,7 +48,7 @@ end
 
 class Bishop < SlidingPiece
   def initialize(pos, color, board)
-    super(pos, color, board)
+    super
     @directions = [:diagonals]
   end
 end
@@ -56,7 +56,7 @@ end
 
 class Rook < SlidingPiece
   def initialize(pos, color, board)
-    super(pos, color, board)
+    super
     @directions = [:cross]
   end
 
@@ -64,7 +64,7 @@ end
 
 class Queen < SlidingPiece
   def initialize(pos, color, board)
-    super(pos, color, board)
+    super
     @directions = [:cross, :diagonals]
   end
 

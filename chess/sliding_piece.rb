@@ -1,17 +1,17 @@
 require_relative 'piece'
 
 class SlidingPiece < Piece
-  def initialize(pos, color, board)
-    super(pos, color, board)
-  end
+
+  DIAGONAL_DELTAS = [[-1, -1], [-1, 1], [1, 1], [1, -1]]
+  CROSS_DELTAS = [[-1, 0], [1, 0], [0, -1], [0, 1]]
 
   def moves
     coords = []
     @directions.each do |direction|
       if direction == :diagonals
-        coords += calc_diags
+        coords += calc_moves(DIAGONAL_DELTAS)
       elsif direction == :cross
-        coords += calc_cross
+        coords += calc_moves(CROSS_DELTAS)
       end
     end
 
@@ -39,16 +39,6 @@ class SlidingPiece < Piece
     moves
   end
 
-  def calc_diags
-    deltas = [[-1, -1], [-1, 1], [1, 1], [1, -1]]
-    calc_moves(deltas)
-  end
-
-  def calc_cross
-    deltas = [[-1, 0], [1, 0], [0, -1], [0, 1]]
-    calc_moves(deltas)
-  end
-
   def move_dirs
     raise "Not Implemented"
   end
@@ -61,11 +51,6 @@ class Bishop < SlidingPiece
     super(pos, color, board)
     @directions = [:diagonals]
   end
-
-  def moves
-    super
-  end
-
 end
 
 
@@ -75,9 +60,6 @@ class Rook < SlidingPiece
     @directions = [:cross]
   end
 
-  def moves
-    super
-  end
 end
 
 class Queen < SlidingPiece
@@ -86,9 +68,6 @@ class Queen < SlidingPiece
     @directions = [:cross, :diagonals]
   end
 
-  def moves
-    super
-  end
 end
 
 

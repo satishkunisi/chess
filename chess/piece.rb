@@ -1,3 +1,5 @@
+require_relative 'board'
+
 class Piece
   attr_accessor :pos, :color
   attr_reader :board
@@ -7,6 +9,10 @@ class Piece
   end
 
   def moves
-    raise
+    raise "Not Implemented"
   end
+
 end
+
+
+

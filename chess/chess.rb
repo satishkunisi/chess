@@ -77,6 +77,7 @@ class HumanPlayer
   def check_in_bound(board, pos)
     raise "Postion entered is out of bounds" unless board.in_bound?(pos)
   end
+
 end
 
 game = Chess.new(HumanPlayer.new("Satish"), HumanPlayer.new("Fong"))

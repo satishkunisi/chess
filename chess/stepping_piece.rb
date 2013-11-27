@@ -1,4 +1,5 @@
 require_relative 'piece'
+require 'colorize'
 
 class SteppingPiece < Piece
   KNIGHT_DELTAS = [[-2, 1], [-1, 2], [1, 2], [2, 1],
@@ -6,6 +7,7 @@ class SteppingPiece < Piece
 
   KING_DELTAS = [[-1, 1], [0, 1], [1, 1], [1, 0],
               [1, -1], [0, -1], [-1, -1]]
+
   def moves
     if @directions == :knight
       calc_moves(KNIGHT_DELTAS)
@@ -38,7 +40,7 @@ class Knight < SteppingPiece
   end
 
   def render
-    @color.to_s[0].upcase + "N"
+    PIECE_UNICODE[:knight][@color].encode('utf-8')
   end
 
 end
@@ -51,7 +53,7 @@ class King < SteppingPiece
   end
 
   def render
-    @color.to_s[0].upcase + "K"
+    PIECE_UNICODE[:king][@color].encode('utf-8')
   end
 
 end

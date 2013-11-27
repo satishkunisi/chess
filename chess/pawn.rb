@@ -41,7 +41,7 @@ class Pawn < Piece
   end
 
   def render
-    @color.to_s[0].upcase + "P"
+    PIECE_UNICODE[:pawn][@color].encode('utf-8')
   end
 
 end

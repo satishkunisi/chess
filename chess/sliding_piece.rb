@@ -53,7 +53,7 @@ class Bishop < SlidingPiece
   end
 
   def render
-    @color.to_s[0].upcase + "B"
+    PIECE_UNICODE[:bishop][@color].encode('utf-8')
   end
 end
 
@@ -65,7 +65,7 @@ class Rook < SlidingPiece
   end
 
   def render
-    @color.to_s[0].upcase + "R"
+    PIECE_UNICODE[:rook][@color].encode('utf-8')
   end
 
 end
@@ -77,7 +77,8 @@ class Queen < SlidingPiece
   end
 
   def render
-    @color.to_s[0].upcase + "Q"
+
+    PIECE_UNICODE[:queen][@color].encode('utf-8')
   end
 
 end

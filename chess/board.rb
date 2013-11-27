@@ -70,14 +70,18 @@ class Board
   end
 
   def show
+
+    bg_color = :light_white
     display_string = @grid.map do |row|
+      bg_color =  bg_color == :light_blue ? :light_white : :light_blue
       row.map do |piece, index|
+        bg_color =  bg_color == :light_blue ? :light_white : :light_blue
         if piece
-          piece.render
+          "#{piece.render} ".colorize(:black).colorize(:background => bg_color)
         else
-          "__"
+          "  ".colorize(:background => bg_color)
         end
-      end.join(" ")
+      end.join('')
     end
     puts display_string
   end
@@ -113,7 +117,6 @@ class Board
     end
 
     my_pieces.all? { |piece| piece.valid_moves.empty? }
-
   end
 
   def over?
@@ -121,16 +124,16 @@ class Board
   end
 
   def in_bound?(pos)
-    pos.all? { |coord| coord.between?(0, 7)}
+    pos.all? { |coord| coord.between?(0, 7) }
   end
 
 end
 
-b = Board.new
-
-b.show
-
-p b.find_king_position(:white)
+# b = Board.new
+#
+# b.show
+#
+# p b.find_king_position(:white)
 # b.move([6,5],[5,5])
 # b.move([1,4],[3,4])
 # b.move([6,6],[4,6])

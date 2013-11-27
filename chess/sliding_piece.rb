@@ -51,6 +51,10 @@ class Bishop < SlidingPiece
     super
     @directions = [:diagonals]
   end
+
+  def render
+    @color.to_s[0].upcase + "B"
+  end
 end
 
 
@@ -58,6 +62,10 @@ class Rook < SlidingPiece
   def initialize(pos, color, board)
     super
     @directions = [:cross]
+  end
+
+  def render
+    @color.to_s[0].upcase + "R"
   end
 
 end
@@ -68,9 +76,13 @@ class Queen < SlidingPiece
     @directions = [:cross, :diagonals]
   end
 
+  def render
+    @color.to_s[0].upcase + "Q"
+  end
+
 end
 
 
-bish = Bishop.new([3, 3], :white, Board.new)
-rooky = Rook.new([3, 3], :white, Board.new)
-queeny = Queen.new([3, 3], :white, Board.new)
+# bish = Bishop.new([3, 3], :white, Board.new)
+# rooky = Rook.new([3, 3], :white, Board.new)
+# queeny = Queen.new([3, 3], :white, Board.new)

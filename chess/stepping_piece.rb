@@ -37,6 +37,10 @@ class Knight < SteppingPiece
     @directions = :knight
   end
 
+  def render
+    @color.to_s[0].upcase + "N"
+  end
+
 end
 
 
@@ -44,6 +48,10 @@ class King < SteppingPiece
   def initialize(pos, color, board)
     super(pos, color, board)
     @directions = :king
+  end
+
+  def render
+    @color.to_s[0].upcase + "K"
   end
 
 end

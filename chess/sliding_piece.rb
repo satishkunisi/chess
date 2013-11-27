@@ -18,6 +18,7 @@ class SlidingPiece < Piece
     coords
   end
 
+  private
   def calc_moves(deltas)
     moves = []
 
@@ -77,7 +78,6 @@ class Queen < SlidingPiece
   end
 
   def render
-
     PIECE_UNICODE[:queen][@color].encode('utf-8')
   end
 

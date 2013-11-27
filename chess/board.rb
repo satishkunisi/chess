@@ -31,58 +31,53 @@ class Board
     copy
   end
 
-  def set_board
-    [0, 7].each do |row|
-      color = row == 0 ? :black : :white
-      POSITION.each_with_index do |piece_class, col|
-        self[[row, col]] = piece_class.new([row, col], color, self)
-      end
-    end
-
-    [1, 6].each do |row|
-      color = row == 1 ? :black : :white
-      (0..7).each do |col|
-        self[[row, col]] = Pawn.new([row, col], color, self)
-      end
-    end
-
-  end
 
   def in_check?(color)
     checking_king?(find_king_position(color), color)
   end
 
-  def checking_king?(king_position, color)
-    @grid.any? do |row|
-      row.any? do |piece|
-        piece && piece.moves.include?(king_position) && piece.color != color
-      end
-    end
-  end
-
-  def find_king_position(color)
-    @grid.each do |row|
-      row.each do |piece|
-        return piece.pos if piece.class == King && piece.color == color
-      end
-    end
-
-  end
-
   def show
 
+    counter = 8
     bg_color = :light_white
-    display_string = @grid.map do |row|
+    puts "  " + ("a".."h").to_a.join(" ").colorize(:white)
+    display_string = ""
+
+     @grid.each do |row|
       bg_color =  bg_color == :light_blue ? :light_white : :light_blue
-      row.map do |piece, index|
+
+      display_string << "#{counter} ".colorize(:white)
+
+      display_string << row.map do |piece, index|
         bg_color =  bg_color == :light_blue ? :light_white : :light_blue
+
         if piece
           "#{piece.render} ".colorize(:black).colorize(:background => bg_color)
         else
           "  ".colorize(:background => bg_color)
         end
+
       end.join('')
+      display_string << "\n"
+
+      counter -= 1
     end
+
+
+
+    # display_string = @grid.map do |row|
+    #   bg_color =  bg_color == :light_blue ? :light_white : :light_blue
+    #   row.map do |piece, index|
+    #     bg_color =  bg_color == :light_blue ? :light_white : :light_blue
+    #     if piece
+    #       "#{piece.render} ".colorize(:black).colorize(:background => bg_color)
+    #     else
+    #       "  ".colorize(:background => bg_color)
+    #     end
+    #     counter += 1
+    #   end.join('')
+    #
+    # end
     puts display_string
   end
 
@@ -127,51 +122,42 @@ class Board
     pos.all? { |coord| coord.between?(0, 7) }
   end
 
+  private
+  def checking_king?(king_position, color)
+    @grid.any? do |row|
+      row.any? do |piece|
+        piece && piece.moves.include?(king_position) && piece.color != color
+      end
+    end
+  end
+
+  def find_king_position(color)
+    @grid.each do |row|
+      row.each do |piece|
+        return piece.pos if piece.class == King && piece.color == color
+      end
+    end
+
+  end
+
+  def set_board
+    [0, 7].each do |row|
+      color = row == 0 ? :black : :white
+      POSITION.each_with_index do |piece_class, col|
+        self[[row, col]] = piece_class.new([row, col], color, self)
+      end
+    end
+
+    [1, 6].each do |row|
+      color = row == 1 ? :black : :white
+      (0..7).each do |col|
+        self[[row, col]] = Pawn.new([row, col], color, self)
+      end
+    end
+
+  end
 end
 
-# b = Board.new
-#
-# b.show
-#
-# p b.find_king_position(:white)
-# b.move([6,5],[5,5])
-# b.move([1,4],[3,4])
-# b.move([6,6],[4,6])
-# b.move([0,3],[4,7])
-#
-# b.show
-# p b.in_check?(:white)
-# p b.checkmate?(:white)
-# b.move([6, 3], [4, 3])
-# b.move([7, 3], [5, 3])
-# b.move([5,3], [1,7])
-# b.move([0,1], [2,2])
-# b.move([2,2], [4,3])
-# b.move([4,3], [2,4])
-# b.move([1,3], [3,3])
-# b.move([0,2], [1,3])
-# b.move([1,3], [4,0])
-# b.move([4,0], [6,2])
-# b.move([6,2], [6,3])
-# b[[7,3]] = b[[0,3]].dup
-# p "======="
-# b.show
-#
-# d = b.dup
-# p "duped board ============"
-# d.show
-# p d[[7,4]].moves
-# p d[[7,4]].valid_moves
-# p "is white in check"
-# p d.in_check?(:white)
-# p d.checkmate?(:white)
-#
-# # p b[[7,4]].board[[7,3]].render
-# #b.show
-# #p b.checkmate?(:white)
-# # b.move([7,4], [7,3])
-# # p b[[7,4]].valid_moves
-# # p b.in_check?(:white)
 
 
 

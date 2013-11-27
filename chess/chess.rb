@@ -15,11 +15,11 @@ class Chess
       @board.show
       take_turn
     end
-
+    @board.show
     puts "#{@current_player.name} wins! Game over."
   end
 
-
+  private
   def take_turn
     begin
       current_move = @current_player.get_move(@board)
@@ -29,7 +29,6 @@ class Chess
       puts error.message
       retry
     end
-
 
     @current_player = (@current_player == @player1) ? @player2 : @player1
   end
@@ -54,8 +53,9 @@ class HumanPlayer
 
   def get_move(board)
     begin
-      print "Enter your starting position (ex: 1,0): "
-      start_pos = gets.chomp.split(',').map(&:to_i)
+      print "Enter your starting position (ex: a2): "
+
+      start_pos = convert_input(gets.chomp)
       check_in_bound(board, start_pos)
     rescue => e
       puts e.message
@@ -63,8 +63,9 @@ class HumanPlayer
     end
 
     begin
-      print "Enter your end position (ex: 1,0): "
-      end_pos = gets.chomp.split(',').map(&:to_i)
+      print "Enter your end position (ex: a2): "
+
+      end_pos = convert_input(gets.chomp)
       check_in_bound(board, end_pos)
     rescue => e
       puts e.message
@@ -74,8 +75,14 @@ class HumanPlayer
     [start_pos, end_pos]
   end
 
+  private
   def check_in_bound(board, pos)
     raise "Postion entered is out of bounds" unless board.in_bound?(pos)
+  end
+
+  def convert_input(user_input)
+
+    [ (user_input[1].to_i - 8).abs, ("a".."h").to_a.index(user_input[0]) ]
   end
 
 end

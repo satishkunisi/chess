@@ -4,6 +4,20 @@ class Pawn < Piece
   BLACK_PAWN_DELTAS = [[1, -1], [1, 1], [1, 0], [2, 0]]
   WHITE_PAWN_DELTAS = [[-1, -1], [-1, 1], [-1, 0], [-2, 0]]
 
+  def moves
+    if @color == :white
+      calc_moves(WHITE_PAWN_DELTAS)
+    else
+      calc_moves(BLACK_PAWN_DELTAS)
+    end
+
+  end
+
+  def render
+    PIECE_UNICODE[:pawn][@color].encode('utf-8')
+  end
+
+  private
   def calc_moves(deltas)
     valid_moves = []
 
@@ -28,20 +42,6 @@ class Pawn < Piece
     end
 
     valid_moves
-  end
-
-  def moves
-
-    if @color == :white
-      calc_moves(WHITE_PAWN_DELTAS)
-    else
-      calc_moves(BLACK_PAWN_DELTAS)
-    end
-
-  end
-
-  def render
-    PIECE_UNICODE[:pawn][@color].encode('utf-8')
   end
 
 end

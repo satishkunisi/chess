@@ -16,6 +16,7 @@ class SteppingPiece < Piece
     end
   end
 
+  private
   def calc_moves(deltas)
     valid_moves = []
     x, y = @pos

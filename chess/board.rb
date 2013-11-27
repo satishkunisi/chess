@@ -25,7 +25,7 @@ class Board
     copy = Board.new
     copy.grid = @grid.map do |row|
       row.map do |piece|
-        (piece.nil?)? nil : piece
+        (piece.nil?)? nil : piece.dup
       end
     end
     copy
@@ -89,7 +89,11 @@ class Board
   def move(start_pos, end_pos)
     piece = self[start_pos]
     raise "There's no piece at start position" unless piece
-    raise "Piece can't move there." unless piece.moves.include?(end_pos)
+    raise "There's a piece in the way." unless piece.moves.include?(end_pos)
+
+    unless piece.valid_moves.include?(end_pos)
+      raise "Piece can't move there or your King will be in check."
+    end
 
     self[end_pos] = piece
     piece.pos = end_pos
@@ -97,6 +101,27 @@ class Board
     self[start_pos] = nil
 
   end
+
+  def move!(start_pos, end_pos)
+    piece = self[start_pos]
+
+    self[end_pos] = piece
+    piece.pos = end_pos
+
+    self[start_pos] = nil
+  end
+
+  def checkmate?(piece_color)
+
+    my_pieces = @grid.flatten.select do |piece|
+        piece if piece && piece.color == piece_color
+    end
+
+    my_pieces.all? { |piece| piece.valid_moves.empty? }
+
+
+  end
+
 
   def in_bound?(pos)
     pos.all? { |coord| coord.between?(0, 7)}
@@ -106,20 +131,49 @@ end
 
 b = Board.new
 
-b.move([6, 3], [4, 3])
-b.move([7, 3], [5, 3])
-b.move([5,3], [1,7])
-b.move([0,1], [2,2])
-b.move([2,2], [4,3])
-b.move([4,3], [2,4])
-b.move([1,3], [3,3])
-b.move([0,2], [1,3])
-b.move([1,3], [4,0])
-b.move([4,0], [6,2])
-# b.move([7,4], [7,3])
-p b[[7,4]].valid_moves
-p b.in_check?(:white)
 b.show
+
+b.move([6,5],[5,5])
+b.move([1,4],[3,4])
+b.move([6,6],[4,6])
+b.move([0,3],[4,7])
+
+b.show
+p b.in_check?(:white)
+p b.checkmate?(:white)
+# b.move([6, 3], [4, 3])
+# b.move([7, 3], [5, 3])
+# b.move([5,3], [1,7])
+# b.move([0,1], [2,2])
+# b.move([2,2], [4,3])
+# b.move([4,3], [2,4])
+# b.move([1,3], [3,3])
+# b.move([0,2], [1,3])
+# b.move([1,3], [4,0])
+# b.move([4,0], [6,2])
+# b.move([6,2], [6,3])
+# b[[7,3]] = b[[0,3]].dup
+# p "======="
+# b.show
+#
+# d = b.dup
+# p "duped board ============"
+# d.show
+# p d[[7,4]].moves
+# p d[[7,4]].valid_moves
+# p "is white in check"
+# p d.in_check?(:white)
+# p d.checkmate?(:white)
+#
+# # p b[[7,4]].board[[7,3]].render
+# #b.show
+# #p b.checkmate?(:white)
+# # b.move([7,4], [7,3])
+# # p b[[7,4]].valid_moves
+# # p b.in_check?(:white)
+
+
+
 
 
 

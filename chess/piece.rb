@@ -11,14 +11,22 @@ class Piece
   end
 
   def valid_moves
-    moves.delete_if do |move_coord|
-      duped_board = @board.dup
-      duped_board.move(@pos, move_coord)
-      duped_board.in_check?(@color)
-    end
-    moves
-  end
-end
+    valid_coords = []
+    moves.each do |move_coord|
 
+      duped_board = @board.dup
+      duped_board.move!(@pos, move_coord)
+
+      # duped_board.show
+
+      next if duped_board.in_check?(@color)
+      valid_coords << move_coord
+    end
+    valid_coords
+  end
+
+
+
+end
 
 

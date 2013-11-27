@@ -49,28 +49,24 @@ class Board
   end
 
   def in_check?(color)
-    king_position = find_king_position(color)
-    checking_king?(king_position, color)
+    checking_king?(find_king_position(color), color)
   end
 
   def checking_king?(king_position, color)
-    # find opposite pieces
-    # go through all their moves and see if they can get to king_position
-
     @grid.any? do |row|
       row.any? do |piece|
         piece && piece.moves.include?(king_position) && piece.color != color
       end
     end
-
   end
 
   def find_king_position(color)
-    king = nil
     @grid.each do |row|
-      row.each { |piece| king = piece if piece.class == King && piece.color == color }
+      row.each do |piece|
+        return piece.pos if piece.class == King && piece.color == color
+      end
     end
-    king.pos
+
   end
 
   def show
@@ -112,16 +108,17 @@ class Board
   end
 
   def checkmate?(piece_color)
-
     my_pieces = @grid.flatten.select do |piece|
         piece if piece && piece.color == piece_color
     end
 
     my_pieces.all? { |piece| piece.valid_moves.empty? }
 
-
   end
 
+  def over?
+    checkmate?(:white) || checkmate?(:black)
+  end
 
   def in_bound?(pos)
     pos.all? { |coord| coord.between?(0, 7)}
@@ -133,14 +130,15 @@ b = Board.new
 
 b.show
 
-b.move([6,5],[5,5])
-b.move([1,4],[3,4])
-b.move([6,6],[4,6])
-b.move([0,3],[4,7])
-
-b.show
-p b.in_check?(:white)
-p b.checkmate?(:white)
+p b.find_king_position(:white)
+# b.move([6,5],[5,5])
+# b.move([1,4],[3,4])
+# b.move([6,6],[4,6])
+# b.move([0,3],[4,7])
+#
+# b.show
+# p b.in_check?(:white)
+# p b.checkmate?(:white)
 # b.move([6, 3], [4, 3])
 # b.move([7, 3], [5, 3])
 # b.move([5,3], [1,7])

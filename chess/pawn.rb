@@ -43,5 +43,5 @@ class Pawn < Piece
   def render
     @color.to_s[0].upcase + "P"
   end
-#
+
 end

@@ -6,13 +6,12 @@ require_relative 'pawn'
 
 class Board
   POSITION = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+  attr_accessor :grid
 
   def initialize
     @grid = Array.new(8) { Array.new(8, nil) }
     set_board
   end
-
-
 
   def [](pos)
     @grid[pos[0]][pos[1]]
@@ -20,6 +19,16 @@ class Board
 
   def []=(pos, piece)
     @grid[pos[0]][pos[1]] = piece
+  end
+
+  def dup
+    copy = Board.new
+    copy.grid = @grid.map do |row|
+      row.map do |piece|
+        (piece.nil?)? nil : piece
+      end
+    end
+    copy
   end
 
   def set_board
@@ -39,20 +48,54 @@ class Board
 
   end
 
+  def in_check?(color)
+    king_position = find_king_position(color)
+    checking_king?(king_position, color)
+  end
+
+  def checking_king?(king_position, color)
+    # find opposite pieces
+    # go through all their moves and see if they can get to king_position
+
+    @grid.any? do |row|
+      row.any? do |piece|
+        piece && piece.moves.include?(king_position) && piece.color != color
+      end
+    end
+
+  end
+
+  def find_king_position(color)
+    king = nil
+    @grid.each do |row|
+      row.each { |piece| king = piece if piece.class == King && piece.color == color }
+    end
+    king.pos
+  end
+
   def show
-    @grid.map do |row|
-      row.map do |piece|
+    display_string = @grid.map do |row|
+      row.map do |piece, index|
         if piece
           piece.render
         else
           "__"
         end
       end.join(" ")
-    end.join("\n")
+    end
+    puts display_string
   end
 
-  def render
-    puts show
+  def move(start_pos, end_pos)
+    piece = self[start_pos]
+    raise "There's no piece at start position" unless piece
+    raise "Piece can't move there." unless piece.moves.include?(end_pos)
+
+    self[end_pos] = piece
+    piece.pos = end_pos
+
+    self[start_pos] = nil
+
   end
 
   def in_bound?(pos)
@@ -61,7 +104,22 @@ class Board
 
 end
 
-Board.new.render
+b = Board.new
+
+b.move([6, 3], [4, 3])
+b.move([7, 3], [5, 3])
+b.move([5,3], [1,7])
+b.move([0,1], [2,2])
+b.move([2,2], [4,3])
+b.move([4,3], [2,4])
+b.move([1,3], [3,3])
+b.move([0,2], [1,3])
+b.move([1,3], [4,0])
+b.move([4,0], [6,2])
+# b.move([7,4], [7,3])
+p b[[7,4]].valid_moves
+p b.in_check?(:white)
+b.show
 
 
 

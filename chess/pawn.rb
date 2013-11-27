@@ -35,7 +35,7 @@ class Pawn < Piece
     if @color == :white
       calc_moves(WHITE_PAWN_DELTAS)
     else
-      calc_moves(BLACK_WHITE_DELTAS)
+      calc_moves(BLACK_PAWN_DELTAS)
     end
 
   end

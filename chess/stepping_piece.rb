@@ -16,7 +16,7 @@ class SteppingPiece < Piece
 
   def calc_moves(deltas)
     valid_moves = []
-
+    x, y = @pos
     deltas.each do |delta|
       coords = [x + delta[0], y + delta[1]]
 

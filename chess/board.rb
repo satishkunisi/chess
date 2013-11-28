@@ -63,21 +63,6 @@ class Board
       counter -= 1
     end
 
-
-
-    # display_string = @grid.map do |row|
-    #   bg_color =  bg_color == :light_blue ? :light_white : :light_blue
-    #   row.map do |piece, index|
-    #     bg_color =  bg_color == :light_blue ? :light_white : :light_blue
-    #     if piece
-    #       "#{piece.render} ".colorize(:black).colorize(:background => bg_color)
-    #     else
-    #       "  ".colorize(:background => bg_color)
-    #     end
-    #     counter += 1
-    #   end.join('')
-    #
-    # end
     puts display_string
   end
 
